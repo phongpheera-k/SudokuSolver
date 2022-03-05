@@ -21,9 +21,9 @@ public class SudokuBoard
     public Position? GetPosition(int col, int row) => Cells[col, row].Position;
     public void SetPosition(int col, int row) => Cells[col, row].Position = new Position(col, row);
     
-    public List<int> GetPossibility(int col, int row) => Cells[col, row].Possibility;
-    public void SetPossibility(int col, int row, IEnumerable<int> possibility) =>
-        Cells[col, row].Possibility = possibility.ToList();
+    public UniqueList<int> GetPossibility(int col, int row) => Cells[col, row].Possibility;
+    public void SetPossibility(int col, int row, UniqueList<int> possibility) =>
+        Cells[col, row].Possibility = possibility;
     public void RemovePossibility(int col, int row, int value) => Cells[col, row].Possibility.Remove(value);
 
     public bool GetHardPossibility(int col, int row) => Cells[col, row].HardPossibility;
@@ -45,18 +45,18 @@ public class SudokuCell
 {
     public int? Value { get; set; }
     public Position? Position { get; set; }
-    public List<int> Possibility { get; set; } = new();
+    public UniqueList<int> Possibility { get; set; } = new();
     public bool HardPossibility { get; set; }
 }
 
 public class Position
 {
-    public int Column { get; set; }
+    public int Col { get; set; }
     public int Row { get; set; }
 
-    public Position(int column, int row)
+    public Position(int col, int row)
     {
-        Column = column;
+        Col = col;
         Row = row;
     }
 }

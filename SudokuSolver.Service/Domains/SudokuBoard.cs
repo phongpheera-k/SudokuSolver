@@ -51,12 +51,18 @@ public class SudokuCell
 
 public class Position
 {
-    public int Col { get; set; }
-    public int Row { get; set; }
+    public int Col { get; }
+    public int Row { get; }
 
     public Position(int col, int row)
     {
         Col = col;
         Row = row;
     }
+
+    public override bool Equals(object? obj)
+        => obj is Position position
+           && Col == position.Col && Row == position.Row;
+
+    public override int GetHashCode() => HashCode.Combine(Col, Row);
 }

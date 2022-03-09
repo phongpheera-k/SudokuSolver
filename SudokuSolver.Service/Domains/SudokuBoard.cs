@@ -1,3 +1,5 @@
+using SudokuSolver.Service.Extensions;
+
 namespace SudokuSolver.Service.Domains;
 
 public class SudokuBoard
@@ -12,12 +14,24 @@ public class SudokuBoard
         Cells = new SudokuCell[size,size];
         Members = Enumerable.Range(1, size)
             .ToDictionary(r => r,_ => 0);
+        Enumerable.Range(0, size)
+            .ToList()
+            .ForEach(col => Enumerable.Range(0, size)
+                .ToList()
+                .ForEach(row => Cells[col, row].Position = new Position(col, row)));
     }
 
     #region Manage Cells
 
+    public SudokuCell[,] GetAllCells() => Cells;
+
     public int? GetCellValue(int col, int row) => Cells[col, row].Value;
-    public void SetCellValue(int col, int row, int value) => Cells[col, row].Value = value;
+
+    public void SetCellValue(int col, int row, int value)
+    {
+        Cells[col, row].Value = value;
+        MemberIncCount(value);
+    }
     public Position? GetPosition(int col, int row) => Cells[col, row].Position;
     public void SetPosition(int col, int row) => Cells[col, row].Position = new Position(col, row);
     
@@ -33,9 +47,28 @@ public class SudokuBoard
 
     #region Manage Members
 
-    public void IncCount(int key) => Members[key]++;
-    public int[] FindAvailable() => Members.Where(m => m.Value < Size)
+    public void MemberIncCount(int key)
+    {
+        if (Members[key] >= Size)
+            throw new ArgumentException();
+        
+        Members[key]++;
+    }
+    public int[] MemberFindAvailable() => Members.Where(m => m.Value < Size)
         .Select(m => m.Key)
+        .ToArray();
+
+    #endregion
+
+    #region Check Properties
+
+    public int CountCellAvailable() => Cells
+        .ToOneDimension()
+        .Count(c => c.Value is null);
+
+    public SudokuCell[] GetCellAvailable() => Cells
+        .ToOneDimension()
+        .Where(c => c.Value is null)
         .ToArray();
 
     #endregion

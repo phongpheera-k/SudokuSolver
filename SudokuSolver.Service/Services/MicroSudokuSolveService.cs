@@ -18,4 +18,9 @@ public class MicroSudokuSolveService : IMicroSudokuSolveService
 
         int FindStartPosition(int input) => (int) Math.Floor((decimal) input / 3) * 3;
     }
+
+    public int[] GetAllPossible(SudokuBoard board, Position position)
+    {
+        throw new NotImplementedException();
+    }
 }

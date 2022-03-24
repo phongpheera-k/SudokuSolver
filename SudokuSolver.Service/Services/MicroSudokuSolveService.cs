@@ -20,14 +20,12 @@ public class MicroSudokuSolveService : IMicroSudokuSolveService
     }
 
     public Position[] GetColLine(int col, int row, int size = 9)
-    {
-        throw new NotImplementedException();
-    }
+        => Enumerable.Range(0, 9)
+            .Select(r => new Position(r, row)).ToArray();
 
     public Position[] GetRowLine(int col, int row, int size = 9)
-    {
-        throw new NotImplementedException();
-    }
+        => Enumerable.Range(0, 9)
+            .Select(r => new Position(col, r)).ToArray();
 
     public int[] GetAllPossible(SudokuBoard board, Position position)
     {
